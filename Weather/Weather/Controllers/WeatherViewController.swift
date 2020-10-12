@@ -21,8 +21,8 @@ class WeatherViewController: UIViewController {
         let locationLabel = UILabel()
         
         locationLabel.translatesAutoresizingMaskIntoConstraints = false
-        //locationLabel.textAlignment = .center
-        locationLabel.font = UIFont(name: "HelveticaNeue", size: 30)
+        locationLabel.textAlignment = .center
+        locationLabel.font = .systemFont(ofSize: 35)
         locationLabel.numberOfLines = 1
         locationLabel.textColor = .white
         locationLabel.lineBreakMode = .byTruncatingTail
@@ -35,12 +35,12 @@ class WeatherViewController: UIViewController {
         let summaryLabel = UILabel()
         
         summaryLabel.translatesAutoresizingMaskIntoConstraints = false
-        //summaryLabel.textAlignment = .center
-        summaryLabel.font = UIFont(name: "HelveticaNeueLight", size: 17)
+        summaryLabel.textAlignment = .center
+        summaryLabel.font = .systemFont(ofSize: 18, weight: .medium)
         summaryLabel.numberOfLines = 1
         summaryLabel.textColor = .white
         summaryLabel.lineBreakMode = .byTruncatingTail
-        summaryLabel.text = "lalala"
+        summaryLabel.text = "Cloudy"
         
         return summaryLabel
     }()
@@ -63,25 +63,27 @@ class WeatherViewController: UIViewController {
         view.addSubview(tableView)
         stackView.addSubview(locationLabel)
         stackView.addSubview(summaryLabel)
+        
+        tableView.tableHeaderView = createTableHeader()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        stackView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 10.0).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -10.0).isActive = true
+        stackView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        stackView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         stackView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 65.0).isActive = true
         stackView.heightAnchor.constraint(equalToConstant: 70.0).isActive = true
         
         locationLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         summaryLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        summaryLabel.topAnchor.constraint(equalTo: locationLabel.bottomAnchor, constant: 5.0).isActive = true
+        summaryLabel.topAnchor.constraint(equalTo: locationLabel.bottomAnchor).isActive = true
         
         tableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        tableView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 10.0).isActive = true
+        tableView.topAnchor.constraint(equalTo: stackView.bottomAnchor).isActive = true
         
     }
     

@@ -45,11 +45,10 @@ class WeatherViewController: UIViewController {
         return summaryLabel
     }()
     
-    private let tableView: UITableView = {
+    let tableView: UITableView = {
         let table = UITableView()
         
         table.translatesAutoresizingMaskIntoConstraints = false
-        table.backgroundColor = UIColor(red: 255/255.0, green: 216/255.0, blue: 244/255.0, alpha: 1.0)
         
         return table
     }()
@@ -58,7 +57,8 @@ class WeatherViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor(red: 163/255.0, green: 216/255.0, blue: 244/255.0, alpha: 1.0)
-        //tableView.backgroundColor = UIColor(red: 255/255.0, green: 216/255.0, blue: 244/255.0, alpha: 1.0)
+        tableView.backgroundColor = UIColor(red: 255/255.0, green: 216/255.0, blue: 244/255.0, alpha: 1.0)
+        tableView.separatorStyle = .none
         
         view.addSubview(stackView)
         view.addSubview(tableView)
@@ -66,6 +66,7 @@ class WeatherViewController: UIViewController {
         stackView.addSubview(summaryLabel)
         
         tableView.tableHeaderView = createTableHeader()
+        tableView.tableFooterView = createTableFooter()
     }
     
     override func viewDidLayoutSubviews() {
@@ -87,7 +88,6 @@ class WeatherViewController: UIViewController {
         tableView.topAnchor.constraint(equalTo: stackView.bottomAnchor).isActive = true
         
     }
-    
     
 }
 

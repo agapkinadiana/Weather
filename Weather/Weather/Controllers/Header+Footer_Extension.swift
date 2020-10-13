@@ -22,6 +22,8 @@ extension WeatherViewController {
     //MARK: - Table View Header
     func createTableHeader() -> UIView {
         
+        guard let currentWeather = self.currentWeather else { return UIView() }
+        
         let headerView = UIView(frame: CGRect(x: 0,
                                               y: 0,
                                               width: view.frame.size.width,
@@ -35,7 +37,7 @@ extension WeatherViewController {
             temperatureLabel.textColor = .white
             temperatureLabel.font = .systemFont(ofSize: 100, weight: .thin)
             temperatureLabel.textAlignment = .center
-            temperatureLabel.text = "11°"
+            temperatureLabel.text = "\(Converters.convertToCelsius(currentWeather.temperature))°"
             
             return temperatureLabel
         }()
@@ -48,7 +50,7 @@ extension WeatherViewController {
             temperatureLabel.textColor = .white
             temperatureLabel.font = .systemFont(ofSize: 17)
             temperatureLabel.textAlignment = .center
-            temperatureLabel.text = "H:10°  L:20°"
+            temperatureLabel.text = "H:\(Converters.convertToCelsius(self.dailyModels[0].temperatureHigh))°  L:\(Converters.convertToCelsius(self.dailyModels[0].temperatureLow))°"
             
             return temperatureLabel
         }()
@@ -61,6 +63,8 @@ extension WeatherViewController {
     
     //MARK: - Table View Footer
     func createTableFooter() -> UIView {
+        
+        guard let currentWeather = self.currentWeather else { return UIView() }
         
         let footerView = UIView(frame: CGRect(x: 0,
                                               y: tableView.frame.minY,
@@ -76,7 +80,7 @@ extension WeatherViewController {
                                                      y: 0,
                                                      width: footerView.frame.size.width - 40,
                                                      height: 60))
-            summaryLabel.text = "Today: Cloudy currently. The high will be 16°. The low tonight will be 12°."
+            summaryLabel.text = "Today: \(currentWeather.summary) currently. The high will be \(Converters.convertToCelsius(self.dailyModels[0].temperatureHigh))°. The low tonight will be \(Converters.convertToCelsius(self.dailyModels[0].temperatureLow))°."
             summaryLabel.textColor = .white
             summaryLabel.textAlignment = .left
             summaryLabel.numberOfLines = 0
@@ -107,7 +111,7 @@ extension WeatherViewController {
                                                     y: 85,
                                                     width: view.frame.size.width / 3,
                                                     height: 30))
-            sunriseTime.text = "07:36"
+            sunriseTime.text = Converters.getTimeFromDate(Date(timeIntervalSince1970: Double(dailyModels[0].sunriseTime)))
             sunriseTime.textColor = .white
             sunriseTime.textAlignment = .left
             sunriseTime.font = .systemFont(ofSize: 27)
@@ -136,7 +140,7 @@ extension WeatherViewController {
                                                    y: 85,
                                                    width: view.frame.size.width / 3,
                                                    height: 30))
-            sunsetTime.text = "18:16"
+            sunsetTime.text = Converters.getTimeFromDate(Date(timeIntervalSince1970: Double(dailyModels[0].sunsetTime)))
             sunsetTime.textColor = .white
             sunsetTime.textAlignment = .left
             sunsetTime.font = .systemFont(ofSize: 27)
@@ -167,7 +171,7 @@ extension WeatherViewController {
                                                    y: 145,
                                                    width: view.frame.size.width / 3,
                                                    height: 30))
-            chanceOfRainNumber.text = "40%"
+            chanceOfRainNumber.text = "\(String(format: "%.0f", dailyModels[0].precipProbability * 100)) %"
             chanceOfRainNumber.textColor = .white
             chanceOfRainNumber.textAlignment = .left
             chanceOfRainNumber.font = .systemFont(ofSize: 27)
@@ -196,7 +200,7 @@ extension WeatherViewController {
                                                    y: 145,
                                                    width: view.frame.size.width / 3,
                                                    height: 30))
-            humidityNumber.text = "90%"
+            humidityNumber.text = "\(String(format: "%.0f", dailyModels[0].humidity * 100)) %"
             humidityNumber.textColor = .white
             humidityNumber.textAlignment = .left
             humidityNumber.font = .systemFont(ofSize: 27)
@@ -227,7 +231,7 @@ extension WeatherViewController {
                                                    y: 205,
                                                    width: view.frame.size.width / 3,
                                                    height: 30))
-            windNumber.text = "10 km/hr"
+            windNumber.text = "\(String(format: "%.0f", dailyModels[0].windSpeed)) km/hr"
             windNumber.textColor = .white
             windNumber.textAlignment = .left
             windNumber.font = .systemFont(ofSize: 27)
@@ -256,7 +260,7 @@ extension WeatherViewController {
                                                    y: 205,
                                                    width: view.frame.size.width / 3,
                                                    height: 30))
-            feelsLikeNumber.text = "16°"
+            feelsLikeNumber.text = "\(Converters.convertToCelsius(currentWeather.temperature))°"
             feelsLikeNumber.textColor = .white
             feelsLikeNumber.textAlignment = .left
             feelsLikeNumber.font = .systemFont(ofSize: 27)
@@ -287,7 +291,7 @@ extension WeatherViewController {
                                                    y: 265,
                                                    width: view.frame.size.width / 3,
                                                    height: 30))
-            precipitationNumber.text = "0,1 cm"
+            precipitationNumber.text = "\(String(format: "%.1f", dailyModels[0].precipIntensity)) cm"
             precipitationNumber.textColor = .white
             precipitationNumber.textAlignment = .left
             precipitationNumber.font = .systemFont(ofSize: 27)
@@ -316,7 +320,7 @@ extension WeatherViewController {
                                                    y: 265,
                                                    width: view.frame.size.width / 3,
                                                    height: 30))
-            pressureNumber.text = "1011 hPa"
+            pressureNumber.text = "\(Int(dailyModels[0].pressure)) hPa"
             pressureNumber.textColor = .white
             pressureNumber.textAlignment = .left
             pressureNumber.font = .systemFont(ofSize: 27)
@@ -347,7 +351,7 @@ extension WeatherViewController {
                                                    y: 325,
                                                    width: view.frame.size.width / 3,
                                                    height: 30))
-            visibilityNumber.text = "11,3 km"
+            visibilityNumber.text = "\(String(format: "%.1f", dailyModels[0].visibility)) km"
             visibilityNumber.textColor = .white
             visibilityNumber.textAlignment = .left
             visibilityNumber.font = .systemFont(ofSize: 27)
@@ -376,7 +380,7 @@ extension WeatherViewController {
                                                    y: 325,
                                                    width: view.frame.size.width / 3,
                                                    height: 30))
-            uvIndexNumber.text = "1"
+            uvIndexNumber.text = "\(dailyModels[0].uvIndex)"
             uvIndexNumber.textColor = .white
             uvIndexNumber.textAlignment = .left
             uvIndexNumber.font = .systemFont(ofSize: 27)

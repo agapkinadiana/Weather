@@ -27,7 +27,6 @@ class WeatherViewController: UIViewController {
         locationLabel.numberOfLines = 1
         locationLabel.textColor = .white
         locationLabel.lineBreakMode = .byTruncatingTail
-        locationLabel.text = "Minsk"
         
         return locationLabel
     }()
@@ -41,7 +40,6 @@ class WeatherViewController: UIViewController {
         summaryLabel.numberOfLines = 1
         summaryLabel.textColor = .white
         summaryLabel.lineBreakMode = .byTruncatingTail
-        summaryLabel.text = "Cloudy"
         
         return summaryLabel
     }()
@@ -74,10 +72,12 @@ class WeatherViewController: UIViewController {
         stackView.addSubview(locationLabel)
         stackView.addSubview(summaryLabel)
         
+        tableView.delegate = self
+        
         weatherManager.delegate = self
         
-        tableView.tableHeaderView = createTableHeader()
-        tableView.tableFooterView = createTableFooter()
+        //        tableView.tableHeaderView = createTableHeader()
+        //        tableView.tableFooterView = createTableFooter()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -108,10 +108,39 @@ class WeatherViewController: UIViewController {
     
 }
 
+extension WeatherViewController: UITableViewDelegate {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 0 {
+            return 1
+        }
+        return dailyModels.count
+    }
+    
+}
+
 extension WeatherViewController: WeatherManagerDelegate {
     
     func didUpdateWeather(_ weatherManager: WeatherManager, weather: Weather) {
-        print(weather)
+        
+        DispatchQueue.main.async {
+            
+            self.dailyModels = weather.daily.data
+            self.currentWeather = weather.currently
+            self.hourlyModels = weather.hourly.data
+            
+            self.locationLabel.text = Converters.removeUnusedTextAndCharacters(weather.timezone)
+            self.summaryLabel.text = weather.currently.summary
+            
+            self.tableView.reloadData()
+            self.tableView.tableHeaderView = self.createTableHeader()
+            self.tableView.tableFooterView = self.createTableFooter()
+            
+        }
     }
     
 }

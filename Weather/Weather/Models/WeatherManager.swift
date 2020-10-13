@@ -17,6 +17,7 @@ struct WeatherManager {
     var delegate: WeatherManagerDelegate?
     
     func fetchWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+        
         let urlString = "https://api.darksky.net/forecast/6a92402c27dfc4740168ec5c0673a760/\(latitude),\(longitude)?exclude=[flags,minutely]"
         
         URLSession.shared.dataTask(with: URL(string: urlString)!) { (data, response, error) in

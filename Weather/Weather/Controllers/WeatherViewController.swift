@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class WeatherViewController: UIViewController {
     
@@ -53,6 +54,13 @@ class WeatherViewController: UIViewController {
         return table
     }()
     
+    let locationManager = CLLocationManager()
+    var currentLocation: CLLocation?
+    var currentWeather: CurrentWeather?
+    
+    var dailyModels = [DailyWeatherData]()
+    var hourlyModels = [HourlyWeatherData]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -67,6 +75,12 @@ class WeatherViewController: UIViewController {
         
         tableView.tableHeaderView = createTableHeader()
         tableView.tableFooterView = createTableFooter()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        setupLocation()
     }
     
     override func viewDidLayoutSubviews() {

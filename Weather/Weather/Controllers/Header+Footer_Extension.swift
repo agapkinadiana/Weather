@@ -27,7 +27,7 @@ extension WeatherViewController {
         let headerView = UIView(frame: CGRect(x: 0,
                                               y: 0,
                                               width: view.frame.size.width,
-                                              height: 150))
+                                              height: 200))
         
         let temperatureLabel: UILabel =  {
             let temperatureLabel = UILabel(frame: CGRect(x: 10,
@@ -71,7 +71,7 @@ extension WeatherViewController {
                                               width: view.frame.size.width,
                                               height: 400))
         
-        footerView.backgroundColor = .systemBlue
+        footerView.backgroundColor = UIColor(red: 163/255.0, green: 216/255.0, blue: 244/255.0, alpha: 1.0)
         footerView.addSubview(createSeparateLine(x: 0, y: 0, width: view.frame.size.width, height: 1.0))
         
         // SUMMARY

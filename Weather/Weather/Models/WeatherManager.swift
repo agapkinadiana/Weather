@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 import CoreLocation
 
 protocol WeatherManagerDelegate {
@@ -22,7 +23,11 @@ struct WeatherManager {
         
         URLSession.shared.dataTask(with: URL(string: urlString)!) { (data, response, error) in
             
-            guard let data = data, error == nil else { print("Lost connection"); return }
+            guard let data = data, error == nil else {
+                print("Lost connection")
+                return
+                
+            }
             
             var json: Weather?
             
@@ -38,4 +43,5 @@ struct WeatherManager {
         }.resume()
         
     }
+    
 }

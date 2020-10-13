@@ -64,7 +64,7 @@ class WeatherViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor(red: 163/255.0, green: 216/255.0, blue: 244/255.0, alpha: 1.0)
-        tableView.backgroundColor = UIColor(red: 255/255.0, green: 216/255.0, blue: 244/255.0, alpha: 1.0)
+        tableView.backgroundColor = UIColor(red: 163/255.0, green: 216/255.0, blue: 244/255.0, alpha: 1.0)
         tableView.separatorStyle = .none
         
         view.addSubview(stackView)
@@ -72,12 +72,17 @@ class WeatherViewController: UIViewController {
         stackView.addSubview(locationLabel)
         stackView.addSubview(summaryLabel)
         
+        tableView.register(HourlyTableViewCell.nib(), forCellReuseIdentifier: "HourlyTableViewCell")
+        tableView.register(DailyTableViewCell.nib(), forCellReuseIdentifier: "DailyTableViewCell")
+        
         tableView.delegate = self
+        tableView.dataSource = self
+        
+        tableView.addSubview(createSeparateLine(x: 0, y: 200, width: view.frame.size.width, height: 1.0))
+        tableView.addSubview(createSeparateLine(x: 0, y: 320, width: view.frame.size.width, height: 1.0))
         
         weatherManager.delegate = self
-        
-        //        tableView.tableHeaderView = createTableHeader()
-        //        tableView.tableFooterView = createTableFooter()
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -108,7 +113,7 @@ class WeatherViewController: UIViewController {
     
 }
 
-extension WeatherViewController: UITableViewDelegate {
+extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
@@ -121,6 +126,33 @@ extension WeatherViewController: UITableViewDelegate {
         return dailyModels.count
     }
     
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if indexPath.section == 0 {
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: HourlyTableViewCell.identifier, for: indexPath) as! HourlyTableViewCell
+            cell.configure(with: hourlyModels)
+            return cell
+        }
+        
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: DailyTableViewCell.identifier, for: indexPath) as! DailyTableViewCell
+        cell.configure(with: dailyModels[indexPath.row])
+        return cell
+        
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        if indexPath.section == 0 {
+            return 120
+        }
+        // Hide Row with Current Data
+        if indexPath.row == 0 {
+            return 0
+        }
+        return 35
+    }
 }
 
 extension WeatherViewController: WeatherManagerDelegate {

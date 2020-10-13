@@ -15,6 +15,7 @@ struct Converters {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "EEEE"
         return dateFormatter.string(from: inputDate)
+        
     }
     
     static func getTimeFromDate(_ date: Date?) -> String {
@@ -23,6 +24,16 @@ struct Converters {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH:mm"
         return dateFormatter.string(from: inputDate)
+        
+    }
+    
+    static func getHourFromTime(_ date: Date?) -> String {
+        
+        guard let inputDate = date else { return ""}
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "h"
+        return dateFormatter.string(from: inputDate)
+        
     }
     
     static func convertToCelsius(_ fahrenheit: Double) -> Int {

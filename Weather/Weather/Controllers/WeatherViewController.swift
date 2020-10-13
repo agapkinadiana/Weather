@@ -49,6 +49,7 @@ class WeatherViewController: UIViewController {
         let table = UITableView()
         
         table.translatesAutoresizingMaskIntoConstraints = false
+        table.backgroundColor = UIColor(red: 255/255.0, green: 216/255.0, blue: 244/255.0, alpha: 1.0)
         
         return table
     }()
@@ -57,7 +58,7 @@ class WeatherViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor(red: 163/255.0, green: 216/255.0, blue: 244/255.0, alpha: 1.0)
-        tableView.backgroundColor = UIColor(red: 255/255.0, green: 216/255.0, blue: 244/255.0, alpha: 1.0)
+        //tableView.backgroundColor = UIColor(red: 255/255.0, green: 216/255.0, blue: 244/255.0, alpha: 1.0)
         
         view.addSubview(stackView)
         view.addSubview(tableView)

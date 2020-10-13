@@ -22,6 +22,7 @@
 		ED182A4B2535990F00FB7EA9 /* DailyWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED182A4A2535990F00FB7EA9 /* DailyWeather.swift */; };
 		ED182A4E2535992300FB7EA9 /* DailyWeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED182A4D2535992300FB7EA9 /* DailyWeatherData.swift */; };
 		ED182A512535BCAD00FB7EA9 /* WeatherLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED182A502535BCAD00FB7EA9 /* WeatherLocationManager.swift */; };
+		ED182A562535C46800FB7EA9 /* Converters.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED182A552535C46800FB7EA9 /* Converters.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		ED182A4A2535990F00FB7EA9 /* DailyWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyWeather.swift; sourceTree = "<group>"; };
 		ED182A4D2535992300FB7EA9 /* DailyWeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyWeatherData.swift; sourceTree = "<group>"; };
 		ED182A502535BCAD00FB7EA9 /* WeatherLocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherLocationManager.swift; sourceTree = "<group>"; };
+		ED182A552535C46800FB7EA9 /* Converters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Converters.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 				ED182A0D25347F1E00FB7EA9 /* AppDelegate.swift */,
 				ED182A0F25347F1E00FB7EA9 /* SceneDelegate.swift */,
 				ED182A372534947A00FB7EA9 /* Extensions.swift */,
+				ED182A552535C46800FB7EA9 /* Converters.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -211,6 +214,7 @@
 				ED182A4E2535992300FB7EA9 /* DailyWeatherData.swift in Sources */,
 				ED182A0E25347F1E00FB7EA9 /* AppDelegate.swift in Sources */,
 				ED182A1025347F1E00FB7EA9 /* SceneDelegate.swift in Sources */,
+				ED182A562535C46800FB7EA9 /* Converters.swift in Sources */,
 				ED182A42253598E000FB7EA9 /* CurrentWeather.swift in Sources */,
 				ED182A382534947A00FB7EA9 /* Extensions.swift in Sources */,
 				ED182A3F253598C200FB7EA9 /* Weather.swift in Sources */,

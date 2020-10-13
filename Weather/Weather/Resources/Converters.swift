@@ -29,4 +29,16 @@ struct Converters {
         return Int(5.0 / 9.0 * (Double(fahrenheit) - 32.0))
     }
     
+    static func removeUnusedTextAndCharacters(_ text: String) -> String {
+        
+        var editedText = ""
+        
+        if let index = (text.range(of: "/")?.upperBound) {
+            editedText = String(text.suffix(from: index))
+
+            return editedText
+        }
+        return text
+    }
+    
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DailyWeather {
+struct DailyWeather: Codable {
     
     let summary:    String
     let icon:       String

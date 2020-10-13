@@ -56,6 +56,7 @@ class WeatherViewController: UIViewController {
     
     let locationManager = CLLocationManager()
     var currentLocation: CLLocation?
+    var weatherManager = WeatherManager()
     var currentWeather: CurrentWeather?
     
     var dailyModels = [DailyWeatherData]()
@@ -72,6 +73,8 @@ class WeatherViewController: UIViewController {
         view.addSubview(tableView)
         stackView.addSubview(locationLabel)
         stackView.addSubview(summaryLabel)
+        
+        weatherManager.delegate = self
         
         tableView.tableHeaderView = createTableHeader()
         tableView.tableFooterView = createTableFooter()
@@ -101,6 +104,14 @@ class WeatherViewController: UIViewController {
         tableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         tableView.topAnchor.constraint(equalTo: stackView.bottomAnchor).isActive = true
         
+    }
+    
+}
+
+extension WeatherViewController: WeatherManagerDelegate {
+    
+    func didUpdateWeather(_ weatherManager: WeatherManager, weather: Weather) {
+        print(weather)
     }
     
 }

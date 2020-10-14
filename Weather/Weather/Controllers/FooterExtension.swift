@@ -1,5 +1,5 @@
 //
-//  Header+Footer_Extension.swift
+//  FooterExtension.swift
 //  Weather
 //
 //  Created by Diana Agapkina on 10/12/20.
@@ -17,48 +17,6 @@ extension WeatherViewController {
         line.layer.borderColor = UIColor.white.cgColor
         line.alpha = 0.37
         return line
-    }
-    
-    //MARK: - Table View Header
-    func createTableHeader() -> UIView {
-        
-        guard let currentWeather = self.currentWeather else { return UIView() }
-        
-        let headerView = UIView(frame: CGRect(x: 0,
-                                              y: 0,
-                                              width: view.frame.size.width,
-                                              height: 200))
-        
-        let temperatureLabel: UILabel =  {
-            let temperatureLabel = UILabel(frame: CGRect(x: 10,
-                                                         y: 0,
-                                                         width: view.frame.size.width,
-                                                         height: 100))
-            temperatureLabel.textColor = .white
-            temperatureLabel.font = .systemFont(ofSize: 100, weight: .thin)
-            temperatureLabel.textAlignment = .center
-            temperatureLabel.text = "\(Converters.convertToCelsius(currentWeather.temperature))°"
-            
-            return temperatureLabel
-        }()
-        
-        let highAndLowLabel: UILabel =  {
-            let temperatureLabel = UILabel(frame: CGRect(x: 0,
-                                                         y: temperatureLabel.bottom + 4,
-                                                         width: view.frame.size.width,
-                                                         height: 20))
-            temperatureLabel.textColor = .white
-            temperatureLabel.font = .systemFont(ofSize: 17)
-            temperatureLabel.textAlignment = .center
-            temperatureLabel.text = "H:\(Converters.convertToCelsius(self.dailyModels[0].temperatureHigh))°  L:\(Converters.convertToCelsius(self.dailyModels[0].temperatureLow))°"
-            
-            return temperatureLabel
-        }()
-        
-        headerView.addSubview(temperatureLabel)
-        headerView.addSubview(highAndLowLabel)
-        
-        return headerView
     }
     
     //MARK: - Table View Footer

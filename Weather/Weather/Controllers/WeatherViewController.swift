@@ -12,9 +12,7 @@ class WeatherViewController: UIViewController {
     
     private let stackView: UIStackView = {
         let stackView = UIStackView()
-        
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        
         return stackView
     }()
     
@@ -44,6 +42,34 @@ class WeatherViewController: UIViewController {
         return summaryLabel
     }()
     
+    private let headerView: UIView = {
+        let headerView = UIView()
+        
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return headerView
+    }()
+    
+    private let temperatureLabel: UILabel =  {
+        let temperatureLabel = UILabel()
+        temperatureLabel.translatesAutoresizingMaskIntoConstraints = false
+        temperatureLabel.textColor = .white
+        temperatureLabel.font = .systemFont(ofSize: 100, weight: .thin)
+        temperatureLabel.textAlignment = .center
+        
+        return temperatureLabel
+    }()
+    
+    let highAndLowLabel: UILabel =  {
+        let highAndLowLabel = UILabel()
+        highAndLowLabel.translatesAutoresizingMaskIntoConstraints = false
+        highAndLowLabel.textColor = .white
+        highAndLowLabel.font = .systemFont(ofSize: 17)
+        highAndLowLabel.textAlignment = .center
+        
+        return highAndLowLabel
+    }()
+    
     let tableView: UITableView = {
         let table = UITableView()
         
@@ -69,7 +95,12 @@ class WeatherViewController: UIViewController {
         tableView.separatorStyle = .none
         
         view.addSubview(stackView)
+        view.addSubview(headerView)
         view.addSubview(tableView)
+        
+        headerView.addSubview(temperatureLabel)
+        headerView.addSubview(highAndLowLabel)
+        
         stackView.addSubview(locationLabel)
         stackView.addSubview(summaryLabel)
         
@@ -79,8 +110,8 @@ class WeatherViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        tableView.addSubview(createSeparateLine(x: 0, y: 200, width: view.frame.size.width, height: 1.0))
-        tableView.addSubview(createSeparateLine(x: 0, y: 320, width: view.frame.size.width, height: 1.0))
+        tableView.addSubview(createSeparateLine(x: 0, y: 0, width: view.frame.size.width, height: 1.0))
+        tableView.addSubview(createSeparateLine(x: 0, y: 120, width: view.frame.size.width, height: 1.0))
         
         weatherManager.delegate = self
 
@@ -105,10 +136,25 @@ class WeatherViewController: UIViewController {
         summaryLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         summaryLabel.topAnchor.constraint(equalTo: locationLabel.bottomAnchor).isActive = true
         
+        headerView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        headerView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        headerView.topAnchor.constraint(equalTo: stackView.bottomAnchor).isActive = true
+        headerView.heightAnchor.constraint(equalToConstant: 200.0).isActive = true
+        
+        temperatureLabel.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 10.0).isActive = true
+        temperatureLabel.heightAnchor.constraint(equalToConstant: 100.0).isActive = true
+        temperatureLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 10.0).isActive = true
+        temperatureLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor).isActive = true
+        
+        highAndLowLabel.topAnchor.constraint(equalTo: temperatureLabel.bottomAnchor, constant: 4.0).isActive = true
+        highAndLowLabel.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
+        highAndLowLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor).isActive = true
+        highAndLowLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor).isActive = true
+        
         tableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        tableView.topAnchor.constraint(equalTo: stackView.bottomAnchor).isActive = true
+        tableView.topAnchor.constraint(equalTo: headerView.bottomAnchor).isActive = true
         
     }
     
@@ -148,25 +194,22 @@ extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
         if indexPath.section == 0 {
             return 120
         }
-        // Hide Row with Current Data
-        if indexPath.row == 0 {
-            return 0
-        }
+
+//        if indexPath.row == 0 {
+//            return 0
+//        }
         return 40
     }
     
 }
 
-extension WeatherViewController: WeatherManagerDelegate {
-    
-//    func didUpdateWeatherWithSavedData(_ weatherManager: WeatherManager, weather: Weather) {
-//        
-//    }
-    
+extension WeatherViewController: WeatherManagerDelegate {    
     
     func didUpdateWeather(_ weatherManager: WeatherManager, weather: Weather) {
         
         DispatchQueue.main.async {
+            
+            //guard let currentWeather = self.currentWeather else { return }
             
             self.dailyModels = weather.daily.data
             self.currentWeather = weather.currently
@@ -178,8 +221,11 @@ extension WeatherViewController: WeatherManagerDelegate {
             self.locationLabel.text = Converters.removeUnusedTextAndCharacters(weather.timezone)
             self.summaryLabel.text = weather.currently.summary
             
+            self.temperatureLabel.text = "\(Converters.convertToCelsius(self.currentWeather!.temperature))°"
+            self.highAndLowLabel.text = "H:\(Converters.convertToCelsius(self.dailyModels[0].temperatureHigh))°  L:\(Converters.convertToCelsius(self.dailyModels[0].temperatureLow))°"
+            
             self.tableView.reloadData()
-            self.tableView.tableHeaderView = self.createTableHeader()
+            //self.tableView.tableHeaderView = self.createTableHeader()
             self.tableView.tableFooterView = self.createTableFooter()
             
         }

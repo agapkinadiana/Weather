@@ -48,19 +48,29 @@
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eG1-ew-Sn4">
+                        <rect key="frame" x="218" y="23" width="132" height="21"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                        <color key="textColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="eG1-ew-Sn4" firstAttribute="height" secondItem="pqc-mW-Boo" secondAttribute="height" multiplier="0.84" id="4as-Rq-WcD"/>
                     <constraint firstItem="Up5-nd-ad5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="7At-TF-zOC"/>
                     <constraint firstItem="U2c-Tw-lYd" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="FFl-mW-j1x"/>
                     <constraint firstItem="pqc-mW-Boo" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="FLq-TE-tmk"/>
+                    <constraint firstItem="eG1-ew-Sn4" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" constant="-2" id="Ly7-LS-Tbs"/>
                     <constraint firstAttribute="bottom" secondItem="Up5-nd-ad5" secondAttribute="bottom" id="Mm1-4s-Au2"/>
                     <constraint firstAttribute="bottom" secondItem="U2c-Tw-lYd" secondAttribute="bottom" id="RYe-Wj-KYu"/>
                     <constraint firstItem="U2c-Tw-lYd" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="Rx8-7c-e4M"/>
                     <constraint firstAttribute="trailing" secondItem="WrH-iz-aFY" secondAttribute="trailing" constant="20" id="SOW-Eg-Kbi"/>
+                    <constraint firstItem="WrH-iz-aFY" firstAttribute="leading" secondItem="eG1-ew-Sn4" secondAttribute="trailing" id="Sah-6H-cUw"/>
                     <constraint firstItem="WrH-iz-aFY" firstAttribute="trailing" secondItem="Up5-nd-ad5" secondAttribute="trailing" constant="35" id="U3V-Yu-KEb"/>
                     <constraint firstItem="WrH-iz-aFY" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="cvi-e2-1A3"/>
                     <constraint firstAttribute="bottom" secondItem="WrH-iz-aFY" secondAttribute="bottom" id="hov-QX-rZ0"/>
                     <constraint firstItem="pqc-mW-Boo" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="s6e-OE-koo"/>
+                    <constraint firstItem="eG1-ew-Sn4" firstAttribute="leading" secondItem="pqc-mW-Boo" secondAttribute="trailing" constant="5.5" id="ydw-kY-c7F"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -69,6 +79,7 @@
                 <outlet property="highTempLabel" destination="Up5-nd-ad5" id="GBw-Fk-TzD"/>
                 <outlet property="iconImageView" destination="pqc-mW-Boo" id="jeH-VI-yZ9"/>
                 <outlet property="lowTempLabel" destination="WrH-iz-aFY" id="Iht-Pv-ujy"/>
+                <outlet property="probabilityLabel" destination="eG1-ew-Sn4" id="4jh-yk-gD8"/>
             </connections>
             <point key="canvasLocation" x="-259" y="62"/>
         </tableViewCell>

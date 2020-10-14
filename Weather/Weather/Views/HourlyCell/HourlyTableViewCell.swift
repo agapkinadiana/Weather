@@ -54,6 +54,7 @@ extension HourlyTableViewCell: UICollectionViewDelegate, UICollectionViewDataSou
         cell.configure(with: hourlyModels[indexPath.row])
         if indexPath.row == 0 {
             cell.timeLabel.text = "Now"
+            cell.probabilityLabel.text = ""
         }
         
         return cell

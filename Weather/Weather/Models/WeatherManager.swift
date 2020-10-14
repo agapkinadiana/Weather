@@ -11,7 +11,6 @@ import CoreLocation
 
 protocol WeatherManagerDelegate {
     func didUpdateWeather(_ weatherManager: WeatherManager, weather: Weather)
-    //func didUpdateWeatherWithSavedData(_ weatherManager: WeatherManager, weather: Weather)
 }
 
 struct WeatherManager {

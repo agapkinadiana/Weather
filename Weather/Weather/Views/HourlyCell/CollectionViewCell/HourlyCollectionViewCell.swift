@@ -35,9 +35,11 @@ class HourlyCollectionViewCell: UICollectionViewCell {
         
         self.iconImageView.image = IconSet.setIcon(for: icon)
         
-//        if icon == "rain" || icon == "snow" {
-//            self.probabilityLabel.text = "\(String(format: "%.0f", model.precipProbability * 100)) %"
-//        }
+        if icon == "rain" || icon == "snow" {
+            self.probabilityLabel.text = "\(String(format: "%.0f", model.precipProbability * 100)) %"
+        } else {
+            self.probabilityLabel.text = ""
+        }
     }
 
 }

@@ -13,6 +13,7 @@ class DailyTableViewCell: UITableViewCell {
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var lowTempLabel: UILabel!
     @IBOutlet weak var highTempLabel: UILabel!
+    @IBOutlet weak var probabilityLabel: UILabel!
     
     static let identifier = "DailyTableViewCell"
     
@@ -36,6 +37,12 @@ class DailyTableViewCell: UITableViewCell {
         let icon = model.icon.lowercased()
         self.iconImageView.image = IconSet.setIcon(for: icon)
 
+        if icon == "rain" || icon == "snow" {
+            self.probabilityLabel.text = "\(String(format: "%.0f", model.precipProbability * 100)) %"
+        } else {
+            self.probabilityLabel.text = ""
+        }
+        
     }
     
 }

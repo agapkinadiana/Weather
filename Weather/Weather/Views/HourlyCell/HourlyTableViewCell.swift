@@ -61,6 +61,6 @@ extension HourlyTableViewCell: UICollectionViewDelegate, UICollectionViewDataSou
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width: 45, height: 100)
+        return CGSize(width: 45, height: 105)
     }
 }

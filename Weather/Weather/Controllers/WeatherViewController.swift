@@ -48,6 +48,7 @@ class WeatherViewController: UIViewController {
         let table = UITableView()
         
         table.translatesAutoresizingMaskIntoConstraints = false
+        table.allowsSelection = false
         
         return table
     }()
@@ -58,7 +59,7 @@ class WeatherViewController: UIViewController {
     var currentWeather: CurrentWeather?
     
     var dailyModels = [DailyWeatherData]()
-    var hourlyModels = [HourlyWeatherData]()
+    var hourlyModels: [HourlyWeatherData] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -151,11 +152,17 @@ extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
         if indexPath.row == 0 {
             return 0
         }
-        return 35
+        return 40
     }
+    
 }
 
 extension WeatherViewController: WeatherManagerDelegate {
+    
+//    func didUpdateWeatherWithSavedData(_ weatherManager: WeatherManager, weather: Weather) {
+//        
+//    }
+    
     
     func didUpdateWeather(_ weatherManager: WeatherManager, weather: Weather) {
         
@@ -163,7 +170,10 @@ extension WeatherViewController: WeatherManagerDelegate {
             
             self.dailyModels = weather.daily.data
             self.currentWeather = weather.currently
-            self.hourlyModels = weather.hourly.data
+            
+            for index in 0...23 {
+                self.hourlyModels.append(weather.hourly.data[index])
+            }
             
             self.locationLabel.text = Converters.removeUnusedTextAndCharacters(weather.timezone)
             self.summaryLabel.text = weather.currently.summary
@@ -174,6 +184,8 @@ extension WeatherViewController: WeatherManagerDelegate {
             
         }
     }
+    
+    
     
 }
 

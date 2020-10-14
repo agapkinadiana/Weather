@@ -31,7 +31,7 @@ struct Converters {
         
         guard let inputDate = date else { return ""}
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "h"
+        dateFormatter.dateFormat = "HH"
         return dateFormatter.string(from: inputDate)
         
     }

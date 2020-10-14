@@ -12,6 +12,7 @@ class HourlyCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var tempLabel: UILabel!
     @IBOutlet weak var iconImageView: UIImageView!
+    @IBOutlet weak var probabilityLabel: UILabel!
     
     static let identifier = "HourlyCollectionViewCell"
     static func nib() -> UINib {
@@ -28,10 +29,15 @@ class HourlyCollectionViewCell: UICollectionViewCell {
         
         self.timeLabel.text = Converters.getHourFromTime(Date(timeIntervalSince1970: TimeInterval(model.time)))
         self.tempLabel.text = "\(Converters.convertToCelsius(model.temperature))°"
-        self.iconImageView.contentMode = .scaleAspectFit
+        self.iconImageView.contentMode = .center
         
-        let icon = model.icon.lowercased()        
+        let icon = model.icon.lowercased()
+        
         self.iconImageView.image = IconSet.setIcon(for: icon)
+        
+//        if icon == "rain" || icon == "snow" {
+//            self.probabilityLabel.text = "\(String(format: "%.0f", model.precipProbability * 100)) %"
+//        }
     }
 
 }

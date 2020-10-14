@@ -25,20 +25,17 @@ class DailyTableViewCell: UITableViewCell {
         
         backgroundColor = .clear
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-    }
     
     func configure(with model: DailyWeatherData) {
         
         self.dayLabel.text = Converters.getDayFromDate(Date(timeIntervalSince1970: Double(model.time)))
         self.lowTempLabel.text = "\(Converters.convertToCelsius(model.temperatureLow))"
         self.highTempLabel.text = "\(Converters.convertToCelsius(model.temperatureHigh))"
+        self.iconImageView.contentMode = .center
         
         let icon = model.icon.lowercased()
         self.iconImageView.image = IconSet.setIcon(for: icon)
+
     }
     
 }

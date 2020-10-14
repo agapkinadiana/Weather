@@ -291,7 +291,7 @@ extension WeatherViewController {
                                                    y: 265,
                                                    width: view.frame.size.width / 3,
                                                    height: 30))
-            precipitationNumber.text = "\(String(format: "%.1f", dailyModels[0].precipIntensity)) cm"
+            precipitationNumber.text = "\(String(format: "%.1f", dailyModels[0].precipIntensity * 100)) cm"
             precipitationNumber.textColor = .white
             precipitationNumber.textAlignment = .left
             precipitationNumber.font = .systemFont(ofSize: 27)

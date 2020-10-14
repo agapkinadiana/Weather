@@ -22,7 +22,7 @@ class HourlyCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        backgroundColor = UIColor(red: 163/255.0, green: 216/255.0, blue: 244/255.0, alpha: 1.0)
+        backgroundColor = UIColor(named: "lightGray")
     }
     
     func configure(with model: HourlyWeatherData) {

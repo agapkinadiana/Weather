@@ -122,7 +122,7 @@
 				ED182A47253598FF00FB7EA9 /* HourlyWeatherData.swift */,
 				ED182A4A2535990F00FB7EA9 /* DailyWeather.swift */,
 				ED182A4D2535992300FB7EA9 /* DailyWeatherData.swift */,
-				ED182A5B2535C65900FB7EA9 /* WeatherManager.swift */,
+				ED6CEEF3253759120078FA0D /* Networking */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -155,6 +155,14 @@
 				ED182A502535BCAD00FB7EA9 /* WeatherLocationManager.swift */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		ED6CEEF3253759120078FA0D /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				ED182A5B2535C65900FB7EA9 /* WeatherManager.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 		ED9D56092535DC17000ED803 /* HourlyCell */ = {

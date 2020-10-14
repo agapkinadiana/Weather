@@ -27,7 +27,7 @@ class HourlyTableViewCell: UITableViewCell, UICollectionViewDelegateFlowLayout {
         collectionView.delegate = self
         collectionView.dataSource = self
         
-        collectionView.backgroundColor = UIColor(red: 163/255.0, green: 216/255.0, blue: 244/255.0, alpha: 1.0)
+        collectionView.backgroundColor = UIColor(named: "lightGray")
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {

@@ -71,7 +71,7 @@ extension WeatherViewController {
                                               width: view.frame.size.width,
                                               height: 400))
         
-        footerView.backgroundColor = UIColor(red: 163/255.0, green: 216/255.0, blue: 244/255.0, alpha: 1.0)
+        footerView.backgroundColor = UIColor(named: "lightGray")
         footerView.addSubview(createSeparateLine(x: 0, y: 0, width: view.frame.size.width, height: 1.0))
         
         // SUMMARY

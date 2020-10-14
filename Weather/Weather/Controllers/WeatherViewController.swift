@@ -64,8 +64,8 @@ class WeatherViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(red: 163/255.0, green: 216/255.0, blue: 244/255.0, alpha: 1.0)
-        tableView.backgroundColor = UIColor(red: 163/255.0, green: 216/255.0, blue: 244/255.0, alpha: 1.0)
+        view.backgroundColor = UIColor(named: "lightGray")
+        tableView.backgroundColor = UIColor(named: "lightGray")
         tableView.separatorStyle = .none
         
         view.addSubview(stackView)

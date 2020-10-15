@@ -23,7 +23,7 @@ class HourlyTableViewCell: UITableViewCell, UICollectionViewDelegateFlowLayout {
         super.awakeFromNib()
         
         collectionView.register(HourlyCollectionViewCell.nib(), forCellWithReuseIdentifier: HourlyCollectionViewCell.identifier)
-        
+
         collectionView.delegate = self
         collectionView.dataSource = self
         

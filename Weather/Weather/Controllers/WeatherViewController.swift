@@ -10,13 +10,13 @@ import CoreLocation
 
 class WeatherViewController: UIViewController {
     
-    private let stackView: UIStackView = {
+    let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
-    private let locationLabel: UILabel = {
+    let locationLabel: UILabel = {
         let locationLabel = UILabel()
         
         locationLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -29,7 +29,7 @@ class WeatherViewController: UIViewController {
         return locationLabel
     }()
     
-    private let summaryLabel: UILabel = {
+    let summaryLabel: UILabel = {
         let summaryLabel = UILabel()
         
         summaryLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -42,7 +42,7 @@ class WeatherViewController: UIViewController {
         return summaryLabel
     }()
     
-    private let headerView: UIView = {
+    let headerView: UIView = {
         let headerView = UIView()
         
         headerView.translatesAutoresizingMaskIntoConstraints = false
@@ -50,7 +50,7 @@ class WeatherViewController: UIViewController {
         return headerView
     }()
     
-    private let temperatureLabel: UILabel =  {
+    let temperatureLabel: UILabel =  {
         let temperatureLabel = UILabel()
         temperatureLabel.translatesAutoresizingMaskIntoConstraints = false
         temperatureLabel.textColor = .white
@@ -79,6 +79,12 @@ class WeatherViewController: UIViewController {
         return table
     }()
     
+    var headerViewHeight: NSLayoutConstraint = NSLayoutConstraint()
+    
+    let maxHeaderHeight: CGFloat = 210
+    let minHeaderHeight: CGFloat = 1
+    var previousScrollOffset: CGFloat = 0
+    
     let locationManager = CLLocationManager()
     var currentLocation: CLLocation?
     var weatherManager = WeatherManager()
@@ -91,8 +97,6 @@ class WeatherViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor(named: "lightGray")
-        tableView.backgroundColor = UIColor(named: "lightGray")
-        tableView.separatorStyle = .none
         
         view.addSubview(stackView)
         view.addSubview(headerView)
@@ -101,8 +105,13 @@ class WeatherViewController: UIViewController {
         headerView.addSubview(temperatureLabel)
         headerView.addSubview(highAndLowLabel)
         
+        headerViewHeight = NSLayoutConstraint(item: headerView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 210)
+        
         stackView.addSubview(locationLabel)
         stackView.addSubview(summaryLabel)
+        
+        tableView.backgroundColor = UIColor(named: "lightGray")
+        tableView.separatorStyle = .none
         
         tableView.register(HourlyTableViewCell.nib(), forCellReuseIdentifier: "HourlyTableViewCell")
         tableView.register(DailyTableViewCell.nib(), forCellReuseIdentifier: "DailyTableViewCell")
@@ -114,17 +123,23 @@ class WeatherViewController: UIViewController {
         tableView.addSubview(createSeparateLine(x: 0, y: 120, width: view.frame.size.width, height: 1.0))
         
         weatherManager.delegate = self
-
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         setupLocation()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
+        setUpConstraints()
+        
+    }
+    
+    //MARK: - SetUp Constraints
+    private func setUpConstraints() {
         
         stackView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         stackView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor).isActive = true
@@ -139,7 +154,7 @@ class WeatherViewController: UIViewController {
         headerView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         headerView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         headerView.topAnchor.constraint(equalTo: stackView.bottomAnchor).isActive = true
-        headerView.heightAnchor.constraint(equalToConstant: 200.0).isActive = true
+        headerView.addConstraint(headerViewHeight)
         
         temperatureLabel.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 10.0).isActive = true
         temperatureLabel.heightAnchor.constraint(equalToConstant: 100.0).isActive = true
@@ -160,7 +175,59 @@ class WeatherViewController: UIViewController {
     
 }
 
+
+//MARK: - TableView Delegate and DataSource Methods
 extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func canAnimateHeader (_ scrollView: UIScrollView) -> Bool {
+        let scrollViewMaxHeight = scrollView.frame.height + self.headerViewHeight.constant - minHeaderHeight
+        return scrollView.contentSize.height > scrollViewMaxHeight
+    }
+    
+    func setScrollPosition() {
+        self.tableView.contentOffset = CGPoint(x:0, y: 0)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        let scrollDiff = (scrollView.contentOffset.y - previousScrollOffset)
+        
+        let isScrollingDown = scrollDiff > 0
+        let isScrollingUp = scrollDiff < 0
+        
+        if canAnimateHeader(scrollView) {
+            var newHeight = headerViewHeight.constant
+            if isScrollingDown {
+                newHeight = max(minHeaderHeight, headerViewHeight.constant - abs(scrollDiff))
+            } else if isScrollingUp {
+                newHeight = min(maxHeaderHeight, headerViewHeight.constant + abs(scrollDiff))
+            }
+            if newHeight != headerViewHeight.constant {
+                headerViewHeight.constant = newHeight
+                setScrollPosition()
+                previousScrollOffset = scrollView.contentOffset.y
+            }
+        }
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        self.scrollViewDidStopScrolling()
+    }
+
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            self.scrollViewDidStopScrolling()
+        }
+    }
+
+    func scrollViewDidStopScrolling() {
+
+        if self.headerViewHeight.constant > 180  {
+            headerViewHeight.constant = maxHeaderHeight
+        } else {
+            headerViewHeight.constant = minHeaderHeight
+        }
+    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
@@ -184,6 +251,7 @@ extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(
             withIdentifier: DailyTableViewCell.identifier, for: indexPath) as! DailyTableViewCell
+        
         cell.configure(with: dailyModels[indexPath.row])
         return cell
         
@@ -194,44 +262,39 @@ extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
         if indexPath.section == 0 {
             return 120
         }
-
-//        if indexPath.row == 0 {
-//            return 0
-//        }
+        
+        if indexPath.row == 0 {
+            return 0
+        }
         return 40
     }
     
 }
 
+//MARK: - Update Weather
 extension WeatherViewController: WeatherManagerDelegate {    
     
     func didUpdateWeather(_ weatherManager: WeatherManager, weather: Weather) {
         
         DispatchQueue.main.async {
             
-            //guard let currentWeather = self.currentWeather else { return }
-            
             self.dailyModels = weather.daily.data
             self.currentWeather = weather.currently
-            
+
             for index in 0...23 {
                 self.hourlyModels.append(weather.hourly.data[index])
             }
-            
+
             self.locationLabel.text = Converters.removeUnusedTextAndCharacters(weather.timezone)
             self.summaryLabel.text = weather.currently.summary
-            
+
             self.temperatureLabel.text = "\(Converters.convertToCelsius(self.currentWeather!.temperature))°"
             self.highAndLowLabel.text = "H:\(Converters.convertToCelsius(self.dailyModels[0].temperatureHigh))°  L:\(Converters.convertToCelsius(self.dailyModels[0].temperatureLow))°"
-            
+
             self.tableView.reloadData()
-            //self.tableView.tableHeaderView = self.createTableHeader()
             self.tableView.tableFooterView = self.createTableFooter()
             
         }
     }
-    
-    
-    
 }
 

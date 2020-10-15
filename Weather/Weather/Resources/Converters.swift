@@ -46,7 +46,10 @@ struct Converters {
         
         if let index = (text.range(of: "/")?.upperBound) {
             editedText = String(text.suffix(from: index))
-
+            if editedText.contains("_") {
+                editedText = editedText.replacingOccurrences(of: "_", with: " ")
+                return editedText
+            }
             return editedText
         }
         return text

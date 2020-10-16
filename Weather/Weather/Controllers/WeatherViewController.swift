@@ -181,10 +181,6 @@ class WeatherViewController: UIViewController {
 //MARK: - TableView Delegate and DataSource Methods
 extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dailyModels.count
     }
@@ -296,7 +292,7 @@ extension WeatherViewController: WeatherManagerDelegate {
             self.dailyModels = weather.daily.data
             self.currentWeather = weather.currently
 
-            for index in 0...23 {
+            for index in 0...24 {
                 self.hourlyModels.append(weather.hourly.data[index])
             }
 

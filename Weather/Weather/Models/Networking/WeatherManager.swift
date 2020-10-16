@@ -33,7 +33,6 @@ struct WeatherManager {
                         self.delegate?.didUpdateWeather(self, weather: weather)
 
                     } catch {
-                        print("Unable to Decode (\(error))")
                         self.delegate?.didRecieveError(error.localizedDescription)
                     }
                 }
@@ -47,9 +46,7 @@ struct WeatherManager {
                 json = try JSONDecoder().decode(Weather.self, from: data)
                 let encodeData = try JSONEncoder().encode(json)
                 UserDefaults.standard.set(encodeData, forKey: "weatherData")
-                
             } catch {
-                print("Unable to Encode: \(error)")
                 self.delegate?.didRecieveError(error.localizedDescription)
             }
             

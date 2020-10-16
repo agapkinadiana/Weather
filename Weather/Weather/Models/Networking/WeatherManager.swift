@@ -9,13 +9,14 @@ import Foundation
 import UIKit
 import CoreLocation
 
-protocol WeatherManagerDelegate {
+protocol WeatherManagerDelegate: class {
     func didUpdateWeather(_ weatherManager: WeatherManager, weather: Weather)
+    func didRecieveError(_ error: String)
 }
 
 struct WeatherManager {
     
-    var delegate: WeatherManagerDelegate?
+    weak var delegate: WeatherManagerDelegate?
     
     func fetchWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
         
@@ -33,6 +34,7 @@ struct WeatherManager {
 
                     } catch {
                         print("Unable to Decode (\(error))")
+                        self.delegate?.didRecieveError(error.localizedDescription)
                     }
                 }
                 
@@ -48,6 +50,7 @@ struct WeatherManager {
                 
             } catch {
                 print("Unable to Encode: \(error)")
+                self.delegate?.didRecieveError(error.localizedDescription)
             }
             
             guard let weather = json else { return }

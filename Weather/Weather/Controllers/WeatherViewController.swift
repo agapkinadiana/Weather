@@ -82,7 +82,7 @@ class WeatherViewController: UIViewController {
     var headerViewHeight: NSLayoutConstraint = NSLayoutConstraint()
     
     let maxHeaderHeight: CGFloat = 210
-    let minHeaderHeight: CGFloat = 1
+    let minHeaderHeight: CGFloat = 0
     var previousScrollOffset: CGFloat = 0
     
     let locationManager = CLLocationManager()
@@ -105,22 +105,19 @@ class WeatherViewController: UIViewController {
         headerView.addSubview(temperatureLabel)
         headerView.addSubview(highAndLowLabel)
         
-        headerViewHeight = NSLayoutConstraint(item: headerView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 210)
+        headerViewHeight = NSLayoutConstraint(item: headerView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: maxHeaderHeight)
         
         stackView.addSubview(locationLabel)
         stackView.addSubview(summaryLabel)
         
         tableView.backgroundColor = UIColor(named: "lightGray")
         tableView.separatorStyle = .none
+        tableView.showsVerticalScrollIndicator = false
         
-        tableView.register(HourlyTableViewCell.nib(), forCellReuseIdentifier: "HourlyTableViewCell")
         tableView.register(DailyTableViewCell.nib(), forCellReuseIdentifier: "DailyTableViewCell")
         
         tableView.delegate = self
         tableView.dataSource = self
-        
-        tableView.addSubview(createSeparateLine(x: 0, y: 0, width: view.frame.size.width, height: 1.0))
-        tableView.addSubview(createSeparateLine(x: 0, y: 120, width: view.frame.size.width, height: 1.0))
         
         weatherManager.delegate = self
         
@@ -173,11 +170,62 @@ class WeatherViewController: UIViewController {
         
     }
     
+    //MARK: - Private methods
+    private func setLablesAlpha(_ percent: CGFloat) {
+        temperatureLabel.alpha = percent
+        highAndLowLabel.alpha = percent
+    }
 }
 
 
 //MARK: - TableView Delegate and DataSource Methods
 extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return dailyModels.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: DailyTableViewCell.identifier, for: indexPath) as! DailyTableViewCell
+        
+        cell.configure(with: dailyModels[indexPath.row])
+        return cell
+        
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 40
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+
+        let headerView = HeaderView(frame: CGRect(x: 0,
+                                                  y: 0,
+                                                  width: view.frame.size.width,
+                                                  height: 105))
+        
+        headerView.configure(with: hourlyModels)
+        
+        headerView.addSubview(createSeparateLine(x: 0, y: 0, width: view.frame.size.width, height: 1.0))
+        headerView.addSubview(createSeparateLine(x: 0, y: 105, width: view.frame.size.width, height: 1.0))
+        
+        return headerView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 105
+    }
+    
+}
+
+//MARK: - ScrollView Delegate Methods
+extension WeatherViewController {
     
     func canAnimateHeader (_ scrollView: UIScrollView) -> Bool {
         let scrollViewMaxHeight = scrollView.frame.height + self.headerViewHeight.constant - minHeaderHeight
@@ -189,21 +237,25 @@ extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
+
         let scrollDiff = (scrollView.contentOffset.y - previousScrollOffset)
-        
+
         let isScrollingDown = scrollDiff > 0
-        let isScrollingUp = scrollDiff < 0
-        
+
         if canAnimateHeader(scrollView) {
-            var newHeight = headerViewHeight.constant
+            let currentHeaderHeight = headerViewHeight.constant
+            let collapsePercent = currentHeaderHeight / maxHeaderHeight
+            
+            let newHeaderHeight: CGFloat
             if isScrollingDown {
-                newHeight = max(minHeaderHeight, headerViewHeight.constant - abs(scrollDiff))
-            } else if isScrollingUp {
-                newHeight = min(maxHeaderHeight, headerViewHeight.constant + abs(scrollDiff))
+                newHeaderHeight = max(minHeaderHeight, headerViewHeight.constant - abs(scrollDiff))
+            } else {
+                newHeaderHeight = min(maxHeaderHeight, headerViewHeight.constant + abs(scrollDiff))
             }
-            if newHeight != headerViewHeight.constant {
-                headerViewHeight.constant = newHeight
+            
+            setLablesAlpha(collapsePercent)
+            if newHeaderHeight != headerViewHeight.constant {
+                headerViewHeight.constant = newHeaderHeight
                 setScrollPosition()
                 previousScrollOffset = scrollView.contentOffset.y
             }
@@ -227,48 +279,11 @@ extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
         } else {
             headerViewHeight.constant = minHeaderHeight
         }
+        
+        UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
+        self.view.layoutIfNeeded()
+        }, completion: nil)
     }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return 1
-        }
-        return dailyModels.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCell(
-                withIdentifier: HourlyTableViewCell.identifier, for: indexPath) as! HourlyTableViewCell
-            cell.configure(with: hourlyModels)
-            return cell
-        }
-        
-        let cell = tableView.dequeueReusableCell(
-            withIdentifier: DailyTableViewCell.identifier, for: indexPath) as! DailyTableViewCell
-        
-        cell.configure(with: dailyModels[indexPath.row])
-        return cell
-        
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
-        if indexPath.section == 0 {
-            return 120
-        }
-        
-        if indexPath.row == 0 {
-            return 0
-        }
-        return 40
-    }
-    
 }
 
 //MARK: - Update Weather
@@ -295,6 +310,18 @@ extension WeatherViewController: WeatherManagerDelegate {
             self.tableView.tableFooterView = self.createTableFooter()
             
         }
+    }
+    
+    func didRecieveError(_ error: String) {
+        let alert = UIAlertController(title: "Error❗️",
+                                      message: "\(error)",
+                                      preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Dismiss",
+                                          style: .cancel,
+                                          handler: nil)
+        
+        alert.addAction(dismissAction)
+        present(alert, animated: true)
     }
 }
 
